@@ -18,16 +18,15 @@ VERBOSE: Trying request using TLS1.1
 VERBOSE: Error pulling certificate using TLS1.1.
 VERBOSE: Trying request using TLS1.0
 VERBOSE: Sucessfully pulled certificate using TLS1.0.
-```
-```Powershell
+
 Thumbprint                                Subject
 ----------                                -------
 CA5308746C1E0644D63AF61BF581C72AF90C7095  CN=*.badssl.com, O=Lucas Garron, L=Walnut Creek, S=California, C=US
-
-PS> $Sites = "google.com","microsoft.com","apple.com"
-PS> .\Get-WebCertificate.ps1 -FQDN $Sites -Port 443
 ```
 ```Powershell
+PS> $Sites = "google.com","microsoft.com","apple.com"
+PS> .\Get-WebCertificate.ps1 -FQDN $Sites -Port 443
+
 Thumbprint                                Subject
 ----------                                -------
 FD226574BEC85E043AB2007917B9F636171D485C  CN=*.google.com, O=Google Inc, L=Mountain View, S=California, C=US
