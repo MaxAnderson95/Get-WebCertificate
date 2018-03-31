@@ -45,6 +45,16 @@ FD226574BEC85E043AB2007917B9F636171D485C  CN=*.google.com, O=Google Inc, L=Mount
 1E83B66D00F2445EFFA9B2DB51118A46943AA885  CN=*.microsoft.com
 768EE9DAE0D8C91E305FBD0DD738CBF1E92DDBF7  CN=www.apple.com, OU=Internet Services, O=Apple Inc., STREET=1 Infinite Loop, L=Cupertino, S=Ca...
 
+
+.EXAMPLE
+PS> "google.com","microsoft.com","apple.com" | .\Get-WebCertificate.ps1 -Port 443
+
+Thumbprint                                Subject
+----------                                -------
+FD226574BEC85E043AB2007917B9F636171D485C  CN=*.google.com, O=Google Inc, L=Mountain View, S=California, C=US
+1E83B66D00F2445EFFA9B2DB51118A46943AA885  CN=*.microsoft.com
+768EE9DAE0D8C91E305FBD0DD738CBF1E92DDBF7  CN=www.apple.com, OU=Internet Services, O=Apple Inc., STREET=1 Infinite Loop, L=Cupertino, S=Ca...
+
 #>
 
 [Cmdletbinding()]
@@ -59,7 +69,7 @@ Param (
 )
 
 Begin {
-    
+
     Function Invoke-WebCertificateRequest {
         [CmdletBinding()]
         param (
