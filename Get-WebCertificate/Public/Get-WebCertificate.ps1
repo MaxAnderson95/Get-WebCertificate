@@ -17,7 +17,7 @@ Function Get-WebCertificate {
     The TCP/IP port that the resource is running on.
 
     .EXAMPLE
-    PS> Get-WebCertificate -FQDN google.com -Port 443
+    PS> Get-WebCertificate -FQDN google.com
 
     Thumbprint                                Subject
     ----------                                -------

@@ -3,7 +3,7 @@ This function makes an HTTPS web request to a given website and port and returns
 
 ## Examples
 ```Powershell
-PS> Get-WebCertificate -FQDN google.com -Port 443
+PS> Get-WebCertificate -FQDN google.com
 
 Thumbprint                                Subject
 ----------                                -------
