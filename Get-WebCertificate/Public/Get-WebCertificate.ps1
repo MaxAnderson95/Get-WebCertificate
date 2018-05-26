@@ -65,7 +65,7 @@ Function Get-WebCertificate {
         [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
         [string[]]$FQDN,
 
-        [Parameter(Mandatory=$true)]
+        [Parameter()]
         [int]$Port = 443
 
     )
