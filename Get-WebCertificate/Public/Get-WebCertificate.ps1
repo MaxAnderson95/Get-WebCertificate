@@ -108,7 +108,7 @@ Function Get-WebCertificate {
                 $Job = Start-Job -ScriptBlock {
                     
                     Import-Module "$($Args[0])\..\Private\Invoke-WebCertificateRequest.ps1"
-                    Invoke-WebCertificateRequest -FQDN $args[1] -Port $args[2] -Algorithm $Args[3].value -ErrorAction SilentlyContinue -ErrorVariable Error_RequestCert
+                    Invoke-WebCertificateRequest -FQDN $args[1] -Port $args[2] -Algorithm $Args[3].value -ErrorAction SilentlyContinue
 
                 } -ArgumentList $PSScriptRoot, $Site, $Port, $Algorithm, $PSScriptRoot
 
