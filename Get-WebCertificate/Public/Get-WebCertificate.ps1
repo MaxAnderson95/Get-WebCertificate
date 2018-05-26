@@ -14,7 +14,7 @@ Function Get-WebCertificate {
     The fully qualified domain name(s) of the web resource you wish to pull a certificate for.
 
     .PARAMETER Port
-    The TCP/IP port that the resource is running on.
+    The TCP/IP port that the resource is running on. This has a default of '443' if not specified.
 
     .EXAMPLE
     PS> Get-WebCertificate -FQDN google.com
