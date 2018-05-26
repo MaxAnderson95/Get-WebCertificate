@@ -17,14 +17,14 @@ Function Get-WebCertificate {
     The TCP/IP port that the resource is running on.
 
     .EXAMPLE
-    PS> .\Get-WebCertificate.ps1 -FQDN google.com -Port 443
+    PS> Get-WebCertificate -FQDN google.com -Port 443
 
     Thumbprint                                Subject
     ----------                                -------
     FD226574BEC85E043AB2007917B9F636171D485C  CN=*.google.com, O=Google Inc, L=Mountain View, S=California, C=US
 
     .EXAMPLE
-    PS> .\Get-WebCertificate.ps1 -FQDN tls-v1-0.badssl.com -Port 1010 -Verbose
+    PS> Get-WebCertificate -FQDN tls-v1-0.badssl.com -Port 1010 -Verbose
 
     VERBOSE: Trying request using TLS1.2
     VERBOSE: Error pulling certificate using TLS1.2.
@@ -39,7 +39,7 @@ Function Get-WebCertificate {
 
     .EXAMPLE
     PS> $Sites = "google.com","microsoft.com","apple.com"
-    PS> .\Get-WebCertificate.ps1 -FQDN $Sites -Port 443
+    PS> Get-WebCertificate -FQDN $Sites -Port 443
 
     Thumbprint                                Subject
     ----------                                -------
@@ -49,7 +49,7 @@ Function Get-WebCertificate {
 
 
     .EXAMPLE
-    PS> "google.com","microsoft.com","apple.com" | .\Get-WebCertificate.ps1 -Port 443
+    PS> "google.com","microsoft.com","apple.com" | Get-WebCertificate -Port 443
 
     Thumbprint                                Subject
     ----------                                -------
