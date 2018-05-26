@@ -72,6 +72,8 @@ Function Get-WebCertificate {
 
     Begin {
 
+        $InformationPreference = "Continue"
+        
         $AlgorithmTable = [Ordered]@{
 
             "TLS1.2" = "Tls12"
@@ -82,30 +84,63 @@ Function Get-WebCertificate {
 
         }
 
+        $CertificateRequestTimeout = 2
+
+        If ($FQDN.Count -eq 1) {Write-Information "Requesting Certificate, please wait..."}
+        If ($FQDN.Count -gt 1) {Write-Information "Requesting Certificates, please wait..."}
+
     }
 
     Process {
 
         ForEach ($Site in $FQDN) {
 
+            Write-Verbose "Attempting to pull certificate for $Site"
+
+            $AlgorithmLoopCount = 0
+
             ForEach ($Algorithm in $AlgorithmTable.GetEnumerator()) {
 
+                $AlgorithmLoopCount++
+
                 Write-Verbose "Trying request using $($Algorithm.Key)"
-                
-                $Certificate = Invoke-WebCertificateRequest -FQDN $Site -Port $Port -Algorithm $Algorithm.value -ErrorAction SilentlyContinue -ErrorVariable Error_RequestCert
 
-                If ($Error_RequestCert) {
+                $Job = Start-Job -ScriptBlock {
+                    
+                    Import-Module "$($Args[0])\..\Private\Invoke-WebCertificateRequest.ps1"
+                    Invoke-WebCertificateRequest -FQDN $args[1] -Port $args[2] -Algorithm $Args[3].value -ErrorAction SilentlyContinue -ErrorVariable Error_RequestCert
 
-                    Write-Verbose "Error pulling certificate using $($Algorithm.Key)."
+                } -ArgumentList $PSScriptRoot, $Site, $Port, $Algorithm, $PSScriptRoot
+
+                Write-Verbose "Waiting for up to $CertificateRequestTimeout seconds."
+                Wait-Job $Job -Timeout $CertificateRequestTimeout | Out-Null
+
+                $Certificate = Receive-Job $Job
+
+                If ($Certificate -eq $Null) {
+                    
+                    If ($AlgorithmLoopCount -eq $AlgorithmTable.Count) {
+
+                        Write-Verbose "No certificate returned. No further protocols to try."
+                        Write-Warning "No certificate returned for $Site."
+                        Break
+
+                    }
+
+                    Else {
+                    
+                        Write-Verbose "No certificate returned trying the next protocol."
+                        Continue
+
+                    }
 
                 }
 
                 Else {
-
-                    Write-Verbose "Sucessfully pulled certificate using $($Algorithm.Key)."
+                    
                     Write-Output $Certificate
                     Break
-
+                
                 }
 
             }
