@@ -72,8 +72,11 @@ Function Get-WebCertificate {
 
     Begin {
 
+        #Set the information preference so calls to Write-Information appear in the console
         $InformationPreference = "Continue"
         
+        #Specify a hash table of protocols. The keys are the friendly names, and the values are the
+        #possible values defined for the System.Security.Authentication.SslProtols .NET type
         $AlgorithmTable = [Ordered]@{
 
             "TLS1.2" = "Tls12"
@@ -84,27 +87,38 @@ Function Get-WebCertificate {
 
         }
 
+        #The number of seconds each attempt to connect for each protocol will last before giving up
+        #and moving to the next protocol
         $CertificateRequestTimeout = 2
 
+        #Outputs to the information stream and handles grammar based on the number of inputted $FQDNs
         If ($FQDN.Count -eq 1) {Write-Information "Requesting Certificate, please wait..."}
         If ($FQDN.Count -gt 1) {Write-Information "Requesting Certificates, please wait..."}
 
     }
 
+    #Loops through each piped in FQDN
     Process {
 
+        #Loops through each site in the FQDN array
         ForEach ($Site in $FQDN) {
 
             Write-Verbose "Attempting to pull certificate for $Site"
 
+            #Resets the algorithm loop counter to 0
             $AlgorithmLoopCount = 0
 
+            #Loops through each alorithm in the algorithm table. Since the hash table is ordered,
+            #this is done in order from top to bottom
             ForEach ($Algorithm in $AlgorithmTable.GetEnumerator()) {
 
+                #Incriment the algorithm loop counter by 1
                 $AlgorithmLoopCount++
 
                 Write-Verbose "Trying request using $($Algorithm.Key)"
 
+                #Start a job that requests the certificate. Because the job is a separate PS process,
+                #the module must be imported, and various arguments must be passed in.
                 $Job = Start-Job -ScriptBlock {
                     
                     Import-Module "$($Args[0])\..\Private\Invoke-WebCertificateRequest.ps1"
@@ -115,14 +129,18 @@ Function Get-WebCertificate {
                 Write-Verbose "Waiting for up to $CertificateRequestTimeout seconds."
                 Wait-Job $Job -Timeout $CertificateRequestTimeout | Out-Null
 
+                #Recieve the job into the certificate variable
                 $Certificate = Receive-Job $Job
 
+                #If the certificate is null (no certificate returned)
                 If ($Certificate -eq $Null) {
                     
+                    #If the current algorithm is the last in the algorithm table
                     If ($AlgorithmLoopCount -eq $AlgorithmTable.Count) {
 
                         Write-Verbose "No certificate returned. No further protocols to try."
                         Write-Warning "No certificate returned for $Site."
+                        #Exit the function
                         Break
 
                     }
@@ -130,15 +148,19 @@ Function Get-WebCertificate {
                     Else {
                     
                         Write-Verbose "No certificate returned trying the next protocol."
+                        #Loop back up to the next algorithm in the algorithm
                         Continue
 
                     }
 
                 }
 
+                #If a certificate is returned
                 Else {
                     
+                    #Output the certificate object
                     Write-Output $Certificate
+                    #Exit the function
                     Break
                 
                 }
