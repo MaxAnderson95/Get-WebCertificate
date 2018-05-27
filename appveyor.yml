@@ -1,0 +1,15 @@
+# Allow WMF5 (i.e. PowerShellGallery functionality)
+os: Unstable
+
+# Skip on updates to the readme.
+# We can force this by adding [skip ci] or [ci skip] anywhere in commit message 
+skip_commits:
+  message: /updated readme.*/
+
+install:
+  - cinst pester -y
+
+build: false
+
+test_script:
+- ps: PowerShell.exe -ExecutionPolicy Bypass -NoProfile -File .\Tests\appveyor.pester.ps1 -Test -Finalize
