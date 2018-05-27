@@ -1,4 +1,6 @@
+<a href="https://ci.appveyor.com/project/MaxAnderson95/get-webcertificate">
 <img src="https://ci.appveyor.com/api/projects/status/github/MaxAnderson95/Get-WebCertificate?branch=master&svg=true" alt="Project Badge" width="125">
+</a>
 
 # Get-WebCertificate
 This function makes an HTTPS web request to a given website and port and returns an X509Certificate2 object. It will automatically try to connect on TLS1.2, TLS1.1, TLS1.0, SSL3 and SSL2 in that order until it successfully connects and pulls the certificate.
