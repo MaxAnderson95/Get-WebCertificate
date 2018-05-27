@@ -124,7 +124,7 @@ Function Get-WebCertificate {
                     Import-Module "$($Args[0])\..\Private\Invoke-WebCertificateRequest.ps1"
                     Invoke-WebCertificateRequest -FQDN $args[1] -Port $args[2] -Algorithm $Args[3].value -ErrorAction SilentlyContinue
 
-                } -ArgumentList $PSScriptRoot, $Site, $Port, $Algorithm, $PSScriptRoot
+                } -ArgumentList $PSScriptRoot, $Site, $Port, $Algorithm
 
                 Write-Verbose "Waiting for up to $CertificateRequestTimeout seconds."
                 Wait-Job $Job -Timeout $CertificateRequestTimeout | Out-Null
@@ -148,7 +148,7 @@ Function Get-WebCertificate {
                     Else {
                     
                         Write-Verbose "No certificate returned trying the next protocol."
-                        #Loop back up to the next algorithm in the algorithm
+                        #Loop back up to the next algorithm in the algorithm table
                         Continue
 
                     }
