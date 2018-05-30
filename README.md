@@ -22,7 +22,7 @@ Manually:
 1. Download a zip'd copy of the repo https://github.com/MaxAnderson95/Get-WebCertificate/archive/master.zip
 2. Unzip the repo into one of your $env:psmodulepath directories.
 
-## Examples
+## Usage
 ```Powershell
 PS> Get-WebCertificate -FQDN google.com
 
