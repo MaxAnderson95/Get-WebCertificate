@@ -5,6 +5,23 @@
 # Get-WebCertificate
 This function makes an HTTPS web request to a given website and port and returns an X509Certificate2 object. It will automatically try to connect on TLS1.2, TLS1.1, TLS1.0, SSL3 and SSL2 in that order until it successfully connects and pulls the certificate.
 
+## Installation
+Via the PowerShell Gallery on PowerShell 5.0 and up (Recommended):
+```Powershell
+PS> Install-Module Get-WebCertificate
+```
+
+Via Git:
+1. Change directory into one of your $env:psmodulepath directories.
+2. Run the following:
+```Powershell
+PS> git clone https://github.com/MaxAnderson95/Get-WebCertificate.git
+```
+
+Manually:
+1. Download a zip'd copy of the repo https://github.com/MaxAnderson95/Get-WebCertificate/archive/master.zip
+2. Unzip the repo into one of your $env:psmodulepath directories.
+
 ## Examples
 ```Powershell
 PS> Get-WebCertificate -FQDN google.com
