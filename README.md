@@ -65,7 +65,7 @@ FD226574BEC85E043AB2007917B9F636171D485C  CN=*.google.com, O=Google Inc, L=Mount
 ```
 ```Powershell
 PS> $Certificate = Get-WebCertificate -FQDN google.com -port 443
-$Certificate | Fortmat-List *
+$Certificate | Format-List *
 
 EnhancedKeyUsageList : {Server Authentication (1.3.6.1.5.5.7.3.1)}
 DnsNameList          : {*.google.com, *.android.com, *.appengine.google.com, *.cloud.google.com...}
